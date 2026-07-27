@@ -56,5 +56,11 @@ class NueralNetwork:
 
             self.grad_b.append(grad_b_i)
             self.grad_W.append(grad_W_i)
+    def gradient_descent(self, A_zero, Y_true):
+        lr = 0.001
+        self.back_prop(A_zero, Y_true)
+        for i in range(len(self.weights)):
+            self.weights[i] -= lr * self.grad_W[i]
+            self.bias[i] -= lr * self.grad_b[i]
 
         
