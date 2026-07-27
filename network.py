@@ -1,5 +1,6 @@
 import numpy as np
 from activations import ReLu, ReLu_grad, softmax
+from losses import categorical_cross_entropy
 
 class NueralNetwork:
     #layer sizes of the form [720, 350, ... ] representing input dimensions and output dimensions for each layer
@@ -62,5 +63,11 @@ class NueralNetwork:
         for i in range(len(self.weights)):
             self.weights[i] -= lr * self.grad_W[i]
             self.bias[i] -= lr * self.grad_b[i]
+
+    def validate(self, X_validate, Y_validate):
+
+        self.feed_forward(X_validate)
+        return categorical_cross_entropy(self.activation[-1], Y_validate)
+
 
         
