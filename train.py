@@ -8,7 +8,7 @@ def train(input_data, true_data, nn):
     patience = 0
 
     for epoch in range(max_epoch):
-        X, Y = dl.make_batches(X_training, Y_training)
+        X, Y = dl.make_batches(X_training, Y_training, nn.batch_size)
         for X,Y in zip(X,Y):
             nn.gradient_descent(X, Y)
         validation_loss = nn.validate(X_validation, Y_validation)

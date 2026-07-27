@@ -3,8 +3,7 @@ import numpy as np
 
 
 #input list and true_list are row stacekd matrices with the examples 
-def make_batches(input_list, true_list):
-    batch_size = 32
+def make_batches(input_list, true_list, batch_size):
     shuffle = np.random.permutation(len(input_list))
     X = input_list[shuffle]
     Y = true_list[shuffle]
