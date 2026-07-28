@@ -6,6 +6,7 @@ class NueralNetwork:
     #layer sizes of the form [720, 350, ... ] representing input dimensions and output dimensions for each layer
     def __init__(self, layer_sizes, batch_size):
         self.batch_size = batch_size
+        self.layer_sizes = layer_sizes
         self.weights = []
         self.bias = []
         for i in range(len(layer_sizes) - 1):
@@ -69,5 +70,30 @@ class NueralNetwork:
         self.feed_forward(X_validate)
         return categorical_cross_entropy(self.activation[-1], Y_validate)
 
+    def evaluate_epoch(self, Y_true, epoch, loss):
+        predictions = np.argmax(self.activation[-1], axis=1)   # predicted class per example
+        true_labels = np.argmax(Y_true, axis=1)                # actual class per example
+        accuracy = np.mean(predictions == true_labels)
 
-        
+        print(f"{epoch:<8}{loss:<10.4f}{accuracy:<10.2%}")
+    
+
+    def evaluate_final(self, X, Y_true):
+        self.feed_forward(X)
+        print(f"{'':<10}{'Precision':<12}{'Recall':<10}{'Fscore':<8}")
+        predictions = np.argmax(self.activation[-1], axis=1)   # predicted class per example
+        true_labels = np.argmax(Y_true, axis=1)   
+
+        for c in range(self.layer_sizes[-1]):
+
+            indices = np.where(predictions == c)[0]
+            precision = np.mean(predictions[indices] == c)
+           
+            indices = np.where(true_labels == c)[0]
+            recall = np.mean(predictions[indices] == c)
+            
+
+            f_score = (2 * recall * precision) / (recall + precision)
+            
+            print(f"{'Class ' + str(c):<10}{precision:<12.2%}{recall:<10.2%}{f_score:<8.2%}")
+       
