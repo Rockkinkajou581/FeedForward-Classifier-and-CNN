@@ -17,6 +17,7 @@ def train(input_data, true_data, nn):
     best_W = None
     best_b = None
     patience = 0
+    print('\n')
     print(f"{'Epoch':<8}{'Loss':<10}{'Accuracy':<10}")
 
     for epoch in range(max_epoch):
@@ -24,10 +25,10 @@ def train(input_data, true_data, nn):
         for X,Y in zip(X,Y):
             ##print(nn.count_dead_neurons(X))
             nn.gradient_descent(X, Y)
-        print("-------------------------")
+        ##print("-------------------------")
         test = np.vstack(tuple(X_training))
-        print(nn.count_dead_neurons(test))
-        print("-------------------------")
+        ##print(nn.count_dead_neurons(test))
+        ##print("-------------------------")
 
         validation_loss = nn.validate(X_validation, Y_validation)
         nn.evaluate_epoch(Y_validation, epoch, validation_loss)
