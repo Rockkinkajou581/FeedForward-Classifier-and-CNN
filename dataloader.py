@@ -2,6 +2,19 @@
 import numpy as np
 
 
+def format_data(data):
+    X = data.data
+    n_samples, n_features = X.shape
+    n_classes = len(np.unique(data.target))
+
+    Y = np.zeros((n_samples, n_classes))
+    Y[np.arange(n_samples), data.target] = 1
+    return X, Y
+
+def standardize(data, mean, standard_deviation):
+    standard_deviation[standard_deviation == 0] = 1
+    return (data - mean) / standard_deviation 
+
 #input list and true_list are row stacekd matrices with the examples 
 def make_batches(input_list, true_list, batch_size):
     shuffle = np.random.permutation(len(input_list))

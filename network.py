@@ -59,7 +59,7 @@ class NueralNetwork:
             self.grad_b.append(grad_b_i)
             self.grad_W.append(grad_W_i)
     def gradient_descent(self, A_zero, Y_true):
-        lr = 0.001
+        lr = 0.05
         self.back_prop(A_zero, Y_true)
         for i in range(len(self.weights)):
             self.weights[i] -= lr * self.grad_W[i]
@@ -78,6 +78,19 @@ class NueralNetwork:
         print(f"{epoch:<8}{loss:<10.4f}{accuracy:<10.2%}")
     
 
+    def count_dead_neurons(self, X):
+        self.feed_forward(X)
+        dead_counts = []
+        for Z in self.preactivation[:-1]:
+            Z = Z <= 0
+            percent = np.mean(Z, axis= 0)
+            dead_counts.append(int(np.sum(percent >= 0.90)))
+        return dead_counts
+
+
+            
+
+
     def evaluate_final(self, X, Y_true):
         self.feed_forward(X)
         print(f"{'':<10}{'Precision':<12}{'Recall':<10}{'Fscore':<8}")
@@ -87,7 +100,7 @@ class NueralNetwork:
         for c in range(self.layer_sizes[-1]):
 
             indices = np.where(predictions == c)[0]
-            precision = np.mean(predictions[indices] == c)
+            precision = np.mean(true_labels[indices] == c)
            
             indices = np.where(true_labels == c)[0]
             recall = np.mean(predictions[indices] == c)
